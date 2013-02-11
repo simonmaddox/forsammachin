@@ -19,7 +19,7 @@
 {
     [super viewDidLoad];
     self.networkCounter = 0;
-	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://thelab.o2.com"]]];
+	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://digitalhatproto.appspot.com/"]]];
 }
 
 #pragma mark - UIWebViewDelegate methods
