@@ -8,8 +8,9 @@
 
 #import "SMXViewController.h"
 
-@interface SMXViewController ()
-
+@interface SMXViewController () <UIWebViewDelegate>
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic) NSInteger networkCounter;
 @end
 
 @implementation SMXViewController
@@ -17,13 +18,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    self.networkCounter = 0;
+	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://thelab.o2.com"]]];
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - UIWebViewDelegate methods
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if (self.networkCounter == 0){
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    }
+    
+    self.networkCounter++;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    self.networkCounter--;
+    
+    if (self.networkCounter == 0){
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+    [alert show];
 }
 
 @end
